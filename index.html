@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      // Q 1 .Write a program to find all pairs of an integer array whose sum is equal to a given number?
+
+      console.log("Answer 1");
+
+      function findPairs(array, targetSum) {
+        const pairs = [];
+        const seen = new Set();
+
+        for (let num of array) {
+          const complement = targetSum - num;
+          if (seen.has(complement)) {
+            pairs.push([num, complement]);
+          }
+          seen.add(num);
+        }
+
+        return pairs;
+      }
+
+      const arr = [2, 4, 6, 5, 3, 9, 7, 1, 8];
+      const target = 10;
+
+      const result = findPairs(arr, target);
+      console.log(result);
+      console.log("----------------");
+
+      //Q2. Write a program to reverse an array in place? In place means you cannot create a new array. You have to update the original array.
+
+      console.log("Answer 2");
+
+      function reverseArrayInPlace(arr) {
+        let start = 0;
+        let end = arr.length - 1;
+
+        while (start < end) {
+          const temp = arr[start];
+          arr[start] = arr[end];
+          arr[end] = temp;
+
+          start++;
+          end--;
+        }
+      }
+
+      const originalArray = [1, 2, 3, 4, 5];
+      console.log("Original Array:", originalArray);
+
+      reverseArrayInPlace(originalArray);
+      console.log("Reversed Array:", originalArray);
+
+      console.log("----------------");
+
+      // Q3. Write a program to check if two strings are a rotation of each other?
+
+      console.log("Answer 3");
+
+      function areRotations(str1, str2) {
+        if (str1.length !== str2.length) {
+          return false;
+        }
+
+        const concatenatedStr2 = str2 + str2;
+
+        if (concatenatedStr2.includes(str1)) {
+          return true;
+        }
+
+        return false;
+      }
+
+      const string1 = "waterbottle";
+      const string2 = "erbottlewat";
+
+      if (areRotations(string1, string2)) {
+        console.log("The two strings are rotations of each other.");
+      } else {
+        console.log("The two strings are not rotations of each other.");
+      }
+
+      console.log("----------------");
+
+      // Q4. Write a program to print the first non-repeated character from a string?
+
+      console.log("Answer 4");
+      function firstNonRepeatedCharacter(str) {
+        const charFrequency = {};
+
+        for (let i = 0; i < str.length; i++) {
+          const char = str[i];
+          charFrequency[char] = (charFrequency[char] || 0) + 1;
+        }
+
+        for (let i = 0; i < str.length; i++) {
+          const char = str[i];
+          if (charFrequency[char] === 1) {
+            return char;
+          }
+        }
+
+        return null;
+      }
+
+      const inputString = "programming";
+      const result1 = firstNonRepeatedCharacter(inputString);
+
+      if (result1) {
+        console.log("The first non-repeated character is: " + result1);
+      } else {
+        console.log("No non-repeated character found in the string.");
+      }
+
+      console.log("----------------");
+
+      // Q5. Read about the Tower of Hanoi algorithm. Write a program to implement it.
+
+      console.log("Answer 5");
+
+      function towerOfHanoi(n, source, auxiliary, destination) {
+        if (n === 1) {
+          console.log(`Move disk 1 from ${source} to ${destination}`);
+          return;
+        }
+
+        towerOfHanoi(n - 1, source, destination, auxiliary);
+        console.log(`Move disk ${n} from ${source} to ${destination}`);
+        towerOfHanoi(n - 1, auxiliary, source, destination);
+      }
+
+      const numDisks = 3;
+      towerOfHanoi(numDisks, "Source", "Auxiliary", "Destination");
+
+      console.log("----------------");
+
+      // Q6. Read about infix, prefix, and postfix expressions. Write a program to convert postfix to prefix expression.
+
+      console.log("Answer 6");
+
+      function postfixToPrefix(postfixExpression) {
+        const stack = [];
+        const operators = "+-*/";
+
+        for (let token of postfixExpression.split(" ")) {
+          if (!operators.includes(token)) {
+            stack.push(token);
+          } else {
+            const operand2 = stack.pop();
+            const operand1 = stack.pop();
+            const prefixExpression = token + operand1 + operand2;
+            stack.push(prefixExpression);
+          }
+        }
+
+        return stack.pop();
+      }
+
+      const postfixExpression = "2 3 + 5 *";
+      const prefixExpression = postfixToPrefix(postfixExpression);
+
+      console.log("Postfix Expression:", postfixExpression);
+      console.log("Prefix Expression:", prefixExpression);
+
+      console.log("----------------");
+
+      // Q7. Write a program to convert prefix expression to infix expression.
+
+      console.log("Answer 7");
+
+      function prefixToInfix(prefixExpression) {
+        const stack = [];
+        const operators = "+-*/";
+
+        for (let i = prefixExpression.length - 1; i >= 0; i--) {
+          const token = prefixExpression[i];
+          if (!operators.includes(token)) {
+            stack.push(token);
+          } else {
+            const operand1 = stack.pop();
+            const operand2 = stack.pop();
+            const infixExpression = `(${operand1}${token}${operand2})`;
+            stack.push(infixExpression);
+          }
+        }
+
+        return stack.pop();
+      }
+
+      const prefixExpression1 = "* + 2 3 5";
+      const infixExpression = prefixToInfix(prefixExpression1);
+
+      console.log("Prefix Expression:", prefixExpression1);
+      console.log("Infix Expression:", infixExpression);
+
+      console.log("----------------");
+
+      //Q8. Write a program to check if all the brackets are closed in a given code snippet.
+
+      console.log("Answer 8");
+
+      function areBracketsClosed(codeSnippet) {
+        const stack = [];
+        const bracketPairs = {
+          "(": ")",
+          "{": "}",
+          "[": "]",
+        };
+
+        for (let char of codeSnippet) {
+          if (char in bracketPairs) {
+            stack.push(char);
+          } else if (char === ")" || char === "}" || char === "]") {
+            const lastBracket = stack.pop();
+            if (bracketPairs[lastBracket] !== char) {
+              return false;
+            }
+          }
+        }
+
+        return stack.length === 0;
+      }
+
+      const code = "function foo() { if (x === 1) { return [1, 2]; } }";
+      const result2 = areBracketsClosed(code);
+
+      if (result2) {
+        console.log("All brackets are properly closed.");
+      } else {
+        console.log("Some brackets are not properly closed.");
+      }
+
+      console.log("----------------");
+
+      // Q9. Write a program to reverse a stack.
+
+      console.log("Answer 9");
+
+      class Stack {
+        constructor() {
+          this.items = [];
+        }
+
+        push(item) {
+          this.items.push(item);
+        }
+
+        pop() {
+          return this.items.pop();
+        }
+
+        isEmpty() {
+          return this.items.length === 0;
+        }
+
+        size() {
+          return this.items.length;
+        }
+      }
+
+      function reverseStack(inputStack) {
+        const reversedStack = new Stack();
+
+        while (!inputStack.isEmpty()) {
+          const item = inputStack.pop();
+          reversedStack.push(item);
+        }
+
+        return reversedStack;
+      }
+
+      const originalStack = new Stack();
+      originalStack.push(1);
+      originalStack.push(2);
+      originalStack.push(3);
+      originalStack.push(4);
+
+      console.log("Original Stack:", originalStack.items);
+
+      const reversedStack = reverseStack(originalStack);
+      console.log("Reversed Stack:", reversedStack.items);
+
+      console.log("----------------");
+
+      // Q10. Write a program to find the smallest number using a stack. in java script
+
+      console.log("Answer 10");
+
+      class StackWithMin {
+        constructor() {
+          this.stack = [];
+          this.minStack = [];
+        }
+
+        push(value) {
+          this.stack.push(value);
+          if (
+            this.minStack.length === 0 ||
+            value <= this.minStack[this.minStack.length - 1]
+          ) {
+            this.minStack.push(value);
+          }
+        }
+
+        pop() {
+          if (this.stack.length === 0) {
+            return null;
+          }
+
+          const poppedValue = this.stack.pop();
+          if (poppedValue === this.minStack[this.minStack.length - 1]) {
+            this.minStack.pop();
+          }
+
+          return poppedValue;
+        }
+
+        getMin() {
+          if (this.minStack.length === 0) {
+            return null;
+          }
+          return this.minStack[this.minStack.length - 1];
+        }
+      }
+
+      const stack = new StackWithMin();
+
+      stack.push(3);
+      stack.push(5);
+      stack.push(2);
+      stack.push(7);
+
+      console.log("Minimum element: " + stack.getMin());
+
+      stack.pop();
+      stack.pop();
+
+      console.log("Minimum element: " + stack.getMin());
+
+      console.log("----------------");
+    </script>
+  </head>
+  <body></body>
+</html>
